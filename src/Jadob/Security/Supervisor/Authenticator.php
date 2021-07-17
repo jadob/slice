@@ -15,7 +15,10 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function count;
+use function is_countable;
 use function spl_object_hash;
+use function sprintf;
 
 /**
  * @author  pizzaminded <mikolajczajkowsky@gmail.com>
