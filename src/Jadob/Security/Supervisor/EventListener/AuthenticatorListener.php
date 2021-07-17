@@ -75,7 +75,10 @@ class AuthenticatorListener implements ListenerProviderInterface, ListenerProvid
 
         //At first, handle stateless
         if ($requestSupervisor->isStateless()) {
-            $response = $this->handleStatelessRequest($event->getRequest(), $requestSupervisor);
+            $response = $this->supervisor->handleStatelessRequest(
+                $event->getContext(),
+                $requestSupervisor
+            );
 
             if ($response !== null) {
                 $event->setResponse($response);
@@ -93,39 +96,6 @@ class AuthenticatorListener implements ListenerProviderInterface, ListenerProvid
 
     }
 
-
-    /**
-     * @TODO: this must be moved to supervisor
-     * @param Request $request
-     * @param RequestSupervisorInterface $supervisor
-     * @return Response|null
-     */
-    protected function handleStatelessRequest(Request $request, RequestSupervisorInterface $supervisor): ?Response
-    {
-        try {
-            $credentials = $supervisor->extractCredentialsFromRequest($request);
-
-            if ($credentials === null || $credentials === false || (is_countable($credentials) && count($credentials) === 0)) {
-                throw UserNotFoundException::emptyCredentials();
-            }
-
-            $userProvider = $this->supervisor->getUserProviderForSupervisor($supervisor);
-            $user = $supervisor->getIdentityFromProvider($credentials, $userProvider);
-
-            if ($user === null) {
-                throw UserNotFoundException::emptyCredentials();
-            }
-
-            if (!$supervisor->verifyIdentity($user, $credentials)) {
-                throw InvalidCredentialsException::invalidCredentials();
-            }
-        } catch (AuthenticationException $exception) {
-            return $supervisor->handleAuthenticationFailure($exception, $request);
-        }
-
-        $this->identityStorage->setUser($user, $request->getSession(), get_class($supervisor));
-        return $supervisor->handleAuthenticationSuccess($request, $user);
-    }
 
     //@TODO: this must be moved to supervisor
     protected function handleNonStatelessRequest(RequestContext $context, RequestSupervisorInterface $supervisor): ?Response
