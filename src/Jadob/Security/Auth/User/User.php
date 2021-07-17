@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jadob\Security\Auth\User;
 
+use Jadob\Contracts\Core\UserInterface;
+
 /**
- * Example User object, that can be used in your app.
+ * Simple User object, that can be used in your app.
  *
  * @package Jadob\Security\Auth\User
  * @author  pizzaminded <mikolajczajkowsky@gmail.com>
