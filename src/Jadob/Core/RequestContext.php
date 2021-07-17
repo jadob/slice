@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace Jadob\Core;
 
+use Jadob\Contracts\Core\RequestContextInterface;
+use Jadob\Contracts\Core\UserInterface;
 use Jadob\Router\Context;
 use Jadob\Router\Route;
-use Jadob\Security\Auth\User\UserInterface;
 use Jadob\Security\Supervisor\RequestSupervisor\RequestSupervisorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -14,8 +15,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * @author pizzaminded <mikolajczajkowsky@gmail.com>
  * @license MIT
  */
-class RequestContext
+class RequestContext implements RequestContextInterface
 {
+
+    protected bool $locked = false;
     protected string $requestId;
     protected Request $request;
     protected ?Context $context = null;
@@ -140,4 +143,14 @@ class RequestContext
     }
 
 
+    public function lock()
+    {
+        if($this->locked) {
+            throw new \LogicException('Context is already locked');
+        }
+
+
+        $this->locked = true;
+
+    }
 }
