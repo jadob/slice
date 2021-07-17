@@ -11,6 +11,7 @@ use Jadob\Security\Auth\IdentityStorage;
 use Jadob\Security\Auth\UserProviderInterface;
 use Jadob\Security\Supervisor\RequestSupervisor\RequestSupervisorInterface;
 use LogicException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ use function spl_object_hash;
  * @author  pizzaminded <mikolajczajkowsky@gmail.com>
  * @license MIT
  */
-class Supervisor
+class Authenticator
 {
     /**
      * @var RequestSupervisorInterface[]
@@ -34,14 +35,18 @@ class Supervisor
 
     protected IdentityStorage $identityStorage;
 
+    protected EventDispatcherInterface $eventDispatcher;
+
     protected LoggerInterface $logger;
 
     public function __construct(
         IdentityStorage $identityStorage,
+        EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger
     )
     {
         $this->identityStorage = $identityStorage;
+        $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
     }
 

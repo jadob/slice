@@ -6,15 +6,15 @@ namespace Jadob\Security\Auth\EventListener;
 use Jadob\Security\Auth\Event\UserEvent;
 use Jadob\Security\Auth\User\RefreshableUserInterface;
 use Jadob\Security\Auth\User\UserInterface;
-use Jadob\Security\Supervisor\Supervisor;
+use Jadob\Security\Supervisor\Authenticator;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
 class RefreshUserListener implements ListenerProviderInterface
 {
 
-    protected Supervisor $supervisor;
+    protected Authenticator $supervisor;
 
-    public function __construct(Supervisor $supervisor)
+    public function __construct(Authenticator $supervisor)
     {
         $this->supervisor = $supervisor;
     }

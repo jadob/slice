@@ -16,7 +16,7 @@ use Jadob\Security\Auth\IdentityStorage;
 use Jadob\Security\Auth\User\UserInterface;
 use Jadob\Security\Supervisor\RequestAttribute;
 use Jadob\Security\Supervisor\RequestSupervisor\RequestSupervisorInterface;
-use Jadob\Security\Supervisor\Supervisor;
+use Jadob\Security\Supervisor\Authenticator;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,17 +29,17 @@ use function get_class;
  */
 class AuthenticatorListener implements ListenerProviderInterface, ListenerProviderPriorityInterface
 {
-    protected Supervisor $supervisor;
+    protected Authenticator $authenticator;
     protected IdentityStorage $identityStorage;
     protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        Supervisor $supervisor,
+        Authenticator $supervisor,
         IdentityStorage $identityStorage,
         EventDispatcherInterface $eventDispatcher
     )
     {
-        $this->supervisor = $supervisor;
+        $this->authenticator = $supervisor;
         $this->identityStorage = $identityStorage;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -60,7 +60,7 @@ class AuthenticatorListener implements ListenerProviderInterface, ListenerProvid
 
     public function onBeforeController(BeforeControllerEvent $event): BeforeControllerEvent
     {
-        $requestSupervisor = $this->supervisor->matchRequestSupervisor($event->getRequest());
+        $requestSupervisor = $this->authenticator->matchRequestSupervisor($event->getRequest());
 
         //Assign current provider to context
         $event->getContext()->setSupervisor($requestSupervisor);
@@ -75,7 +75,7 @@ class AuthenticatorListener implements ListenerProviderInterface, ListenerProvid
 
         //At first, handle stateless
         if ($requestSupervisor->isStateless()) {
-            $response = $this->supervisor->handleStatelessRequest(
+            $response = $this->authenticator->handleStatelessRequest(
                 $event->getContext(),
                 $requestSupervisor
             );
@@ -120,7 +120,7 @@ class AuthenticatorListener implements ListenerProviderInterface, ListenerProvid
                 //Get user
                 $user = $supervisor->getIdentityFromProvider(
                     $credentials,
-                    $this->supervisor->getUserProviderForSupervisor($supervisor)
+                    $this->authenticator->getUserProviderForSupervisor($supervisor)
                 );
 
                 if ($user === null) {

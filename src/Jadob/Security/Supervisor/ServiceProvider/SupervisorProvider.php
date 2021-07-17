@@ -14,7 +14,7 @@ use Jadob\Security\Auth\IdentityStorage;
 use Jadob\Security\Auth\ServiceProvider\AuthProvider;
 use Jadob\Security\Supervisor\EventListener\AuthenticatorListener;
 use Jadob\Security\Supervisor\EventListener\AuthorizerListener;
-use Jadob\Security\Supervisor\Supervisor;
+use Jadob\Security\Supervisor\Authenticator;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -45,13 +45,13 @@ class SupervisorProvider implements ServiceProviderInterface, ParentProviderInte
     public function register($config)
     {
         return [
-            Supervisor::class => static function (ContainerInterface $container) use ($config) {
+            Authenticator::class => static function (ContainerInterface $container) use ($config) {
 
                 $logger = new Logger('supervisor', [
                     $container->get('logger.handler.default')
                 ]);
 
-                $supervisor = new Supervisor($logger);
+                $supervisor = new Authenticator($logger);
                 foreach ($config['supervisors'] as $supervisorName => $supervisorConfig) {
                     $supervisor->addRequestSupervisor(
                         $supervisorName,
@@ -75,8 +75,8 @@ class SupervisorProvider implements ServiceProviderInterface, ParentProviderInte
      */
     public function onContainerBuild(Container $container, $config)
     {
-        /** @var Supervisor $supervisor */
-        $supervisor = $container->get(Supervisor::class);
+        /** @var Authenticator $supervisor */
+        $supervisor = $container->get(Authenticator::class);
         /** @var IdentityStorage $identityStorage */
         $identityStorage = $container->get('auth.user.storage');
         /** @var EventDispatcher $eventDispatcher */

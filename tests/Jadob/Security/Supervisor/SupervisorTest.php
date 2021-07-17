@@ -13,7 +13,7 @@ class SupervisorTest extends TestCase
 
     public function testMatchingWillReturnNullWhenThereIsNoRequestSupervisors()
     {
-        $sup = new Supervisor(new NullLogger());
+        $sup = new Authenticator(new NullLogger());
 
         self::assertCount(0, $sup->getRegisteredRequestSupervisors());
         self::assertNull($sup->matchRequestSupervisor(Request::create('/test')));
