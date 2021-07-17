@@ -1,6 +1,6 @@
 <?php
 
-namespace Jadob\Security\Auth\User;
+namespace Jadob\Contracts\Core;
 
 /**
  * In some cases user object should be fetched once again on each request.
