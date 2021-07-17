@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Jadob\Security\Supervisor;
 
-use Jadob\Core\RequestContext;
+use Jadob\Contracts\Core\RequestContextInterface;
 use Jadob\Security\Auth\Exception\AuthenticationException;
 use Jadob\Security\Auth\Exception\InvalidCredentialsException;
 use Jadob\Security\Auth\Exception\UserNotFoundException;
@@ -93,12 +93,16 @@ class Authenticator
         return $this->requestSupervisors;
     }
 
-    public function handleStatefulRequest(RequestContext $context, RequestSupervisorInterface $requestSupervisor): ?Response
+    public function handleStatefulRequest(
+        RequestContextInterface $context,
+        RequestSupervisorInterface $requestSupervisor
+    ): ?Response
     {
+
     }
 
     public function handleStatelessRequest(
-        RequestContext $context,
+        RequestContextInterface $context,
         RequestSupervisorInterface $requestSupervisor
     ): ?Response
     {
