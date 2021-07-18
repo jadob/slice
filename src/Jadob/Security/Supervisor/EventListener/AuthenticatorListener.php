@@ -179,14 +179,14 @@ class AuthenticatorListener implements ListenerProviderInterface, ListenerProvid
         /**
          * Case #2: User is not authenticated, but supervisor allows these request to continue without authentication
          */
-        if ($userFromStorage === null && $anonymousRequestAllowed) {
+        if ($anonymousRequestAllowed) {
             return null;
         }
 
         /**
          * Case #3: User is not authenticated, but authentication is required
          */
-        if ($userFromStorage === null && !$anonymousRequestAllowed) {
+        if (!$anonymousRequestAllowed) {
             return $supervisor->handleUnauthenticated();
         }
 
