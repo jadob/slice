@@ -82,9 +82,13 @@ return [
     },
 
     //Service name VALID, FQCN VALID, class does not exists, type search will break
-    TotallyRandom\NameThatLooksLikeAClass\ButThatClassDoesNotExists => static function (): \Aws\Sdk {
+    'TotallyRandom\NameThatLooksLikeAClass\ButThatClassDoesNotExists' => static function (): \Aws\Sdk {
         return new \Aws\Sdk([
           //....
         ]);
     },
+];
 ````
+According to that, checking by service name is pointless and error-prone. 
+
+

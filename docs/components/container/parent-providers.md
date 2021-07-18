@@ -4,7 +4,7 @@ Your Service Provider can have parents. Parent is a provider that is registered 
 provider. Using Parents is great way to define which provider is required for current one.
 
 
-Please note: There is no need to define parent providers in your ``Bootstrap`` class. 
+Note: There is no need to define parent providers in your ``Bootstrap`` class. 
 
 
 ## Example 1

@@ -46,6 +46,8 @@ Where:
   
 Only `path` and `controller` are required, `action` defaults to `__invoke` when not passed.
 
+### Route Collections
+
 It's also possible to define a route collection by using this syntax:
 
 ````
