@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Jadob\Security\Auth\Event;
 
 
-use Jadob\Security\Auth\User\UserInterface;
+use Jadob\Contracts\Core\UserInterface;
 use Jadob\Security\Supervisor\RequestSupervisor\RequestSupervisorInterface;
 
 class UserEvent

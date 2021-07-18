@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Jadob\Security\Auth;
 
-use Jadob\Security\Auth\User\UserInterface;
+
+use Jadob\Contracts\Core\UserInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -41,7 +42,7 @@ class IdentityStorage
     }
 
     /**
-     * @TODO   there should be some parameter for defining stateless things
+     * @TODO    there should be some parameter for defining stateless things
      * @param UserInterface $user
      * @param SessionInterface $session
      * @param null|string $provider
@@ -61,7 +62,7 @@ class IdentityStorage
      * @param string $provider FQCN of provider class
      * @return string
      */
-    protected function buildSessionKey($provider): string
+    protected function buildSessionKey(string $provider): string
     {
         return sprintf('%s/%s', self::USER_SESSION_KEY, $provider);
     }
